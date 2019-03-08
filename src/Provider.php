@@ -14,7 +14,7 @@ class Provider implements Retriever {
         $this->schemaStorage = $schema_storage;
     }
 
-    public function retrieve($id)
+    public function retrieve(string $id): ?string
     {
         try {
             $schema_string = $this->schemaStorage->retrieve($id);
