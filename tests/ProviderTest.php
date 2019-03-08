@@ -64,7 +64,7 @@ JSON;
 }
 
 class TestSchemaRetriever implements \Contracts\Retriever {
-    public function retrieve($id) {
+    public function retrieve(string $id): ?string {
         $file_path = __DIR__ . "/data/{$id}.json";
         if (file_exists($file_path)) {
             return file_get_contents($file_path);
