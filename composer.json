@@ -9,7 +9,7 @@
     },
     "require": {
         "justinrainbow/json-schema": "^5.2",
-        "fmizzell/contracts": "dev-master"
+        "fmizzell/contracts": "0.0.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0"
