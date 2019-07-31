@@ -1,5 +1,5 @@
 {
-    "name": "fmizzell/json-schema-provider",
+    "name": "getdkan/json-schema-provider",
     "description": "A simple class that validates and provides JSON schemas.",
     "type": "library",
     "autoload": {
