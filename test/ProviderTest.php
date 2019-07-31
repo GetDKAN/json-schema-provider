@@ -3,13 +3,14 @@
 namespace JsonSchemaProviderTest;
 
 use Swaggest\JsonSchema\Schema;
+use JsonSchemaProvider\Provider;
 
 class ProviderTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testBasJsonSchema()
     {
-        $provider = new \JsonSchemaProvider\Provider(new TestSchemaRetriever());
+        $provider = new Provider(new TestSchemaRetriever());
 
         $this->expectExceptionMessage("The requested schema is not valid JSON");
 

@@ -2,15 +2,15 @@
 
 namespace JsonSchemaProvider;
 
-use Contracts\Retriever;
+use Contracts\RetrieverInterface;
 use JsonSchema\Validator;
 
-class Provider implements Retriever
+class Provider implements RetrieverInterface
 {
 
     private $schemaStorage;
 
-    public function __construct(Retriever $schema_storage)
+    public function __construct(RetrieverInterface $schema_storage)
     {
         $this->schemaStorage = $schema_storage;
     }
