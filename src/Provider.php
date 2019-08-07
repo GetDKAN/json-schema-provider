@@ -23,32 +23,24 @@ class Provider implements RetrieverInterface
             throw new \Exception("A schema {$id} does not exist.");
         }
 
-        if ($schema = json_decode($schema_string)) {
-            if ($this->schemaIsObjectAndContainsMetaSchema($schema)) {
-                $meta_schema_url = $schema->{'$schema'};
-
-                // Validate
-                $validator = new Validator();
-                $validator->validate($schema, (object)['$ref' => $meta_schema_url]);
-
-                if ($validator->isValid()) {
-                    return $schema_string;
-                } else {
-                    $errors = "";
-                    foreach ($validator->getErrors() as $error) {
-                        $errors .= sprintf("[%s] %s\n", $error['property'], $error['message']) . PHP_EOL;
-                    }
-                    throw new \Exception("The requested schema is not valid" . PHP_EOL . $errors);
-                }
-            } else {
-                throw new \Exception(
-                    'The requested schemas is not an object with a reference to ' .
-                    'a valid meta-schema (ex. { "$schema": "http://json-schema.org/draft-07/schema#" })'
-                );
-            }
-        } else {
+        $schema = json_decode($schema_string);
+        if (!$schema) {
             throw new \Exception("The requested schema is not valid JSON");
         }
+
+
+        if (!$this->schemaIsObjectAndContainsMetaSchema($schema)) {
+            throw new \Exception(
+                'The requested schemas is not an object with a reference to ' .
+                'a valid meta-schema (ex. { "$schema": "http://json-schema.org/draft-07/schema#" })'
+            );
+        }
+
+        if (!$this->validSchema($schema)) {
+            throw new \Exception("The requested schema is not valid" . PHP_EOL . $this->getSchemaErrors($schema));
+        }
+
+        return $schema_string;
     }
 
     private function schemaIsObjectAndContainsMetaSchema($schema)
@@ -58,5 +50,31 @@ class Provider implements RetrieverInterface
             && isset($schema->{'$schema'})
             && substr_count($schema->{'$schema'}, "http://json-schema.org/draft-") > 0
         );
+    }
+
+    private function validateSchema($schema): Validator
+    {
+        $meta_schema_url = $schema->{'$schema'};
+
+        $validator = new Validator();
+        $validator->validate($schema, (object)['$ref' => $meta_schema_url]);
+
+        return $validator;
+    }
+
+    private function validSchema($schema)
+    {
+        $validator = $this->validateSchema($schema);
+        return $validator->isValid();
+    }
+
+    private function getSchemaErrors($schema)
+    {
+        $validator = $this->validateSchema($schema);
+        $errors = "";
+        foreach ($validator->getErrors() as $error) {
+            $errors .= sprintf("[%s] %s\n", $error['property'], $error['message']) . PHP_EOL;
+        }
+        return $errors;
     }
 }
