@@ -8,7 +8,7 @@ use JsonSchema\Validator;
 class Provider implements RetrieverInterface
 {
 
-    private $schemaStorage;
+    private RetrieverInterface $schemaStorage;
 
     public function __construct(RetrieverInterface $schema_storage)
     {
@@ -43,7 +43,7 @@ class Provider implements RetrieverInterface
         return $schema_string;
     }
 
-    private function schemaIsObjectAndContainsMetaSchema($schema)
+    private function schemaIsObjectAndContainsMetaSchema($schema): bool
     {
         return (
             is_object($schema)

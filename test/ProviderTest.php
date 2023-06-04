@@ -2,13 +2,14 @@
 
 namespace JsonSchemaProviderTest;
 
+use PHPUnit\Framework\TestCase;
 use Swaggest\JsonSchema\Schema;
 use JsonSchemaProvider\Provider;
 
-class ProviderTest extends \PHPUnit\Framework\TestCase
+class ProviderTest extends TestCase
 {
 
-    public function testBasJsonSchema()
+    public function testBasJsonSchema(): void
     {
         $provider = new Provider(new TestSchemaRetriever());
 
@@ -17,9 +18,9 @@ class ProviderTest extends \PHPUnit\Framework\TestCase
         $provider->retrieve("badjson");
     }
 
-    public function testNotObjectSchema()
+    public function testNotObjectSchema(): void
     {
-        $provider = new \JsonSchemaProvider\Provider(new TestSchemaRetriever());
+        $provider = new Provider(new TestSchemaRetriever());
 
         $this->expectExceptionMessage(
             'The requested schemas is not an object with a reference to a valid ' .
@@ -29,9 +30,9 @@ class ProviderTest extends \PHPUnit\Framework\TestCase
         $provider->retrieve("string");
     }
 
-    public function testNoMetaSchemaSchema()
+    public function testNoMetaSchemaSchema(): void
     {
-        $provider = new \JsonSchemaProvider\Provider(new TestSchemaRetriever());
+        $provider = new Provider(new TestSchemaRetriever());
 
         $this->expectExceptionMessage(
             'The requested schemas is not an object with a reference to a valid ' .
@@ -41,9 +42,9 @@ class ProviderTest extends \PHPUnit\Framework\TestCase
         $provider->retrieve("nometa");
     }
 
-    public function testBadMetaSchemaSchema()
+    public function testBadMetaSchemaSchema(): void
     {
-        $provider = new \JsonSchemaProvider\Provider(new TestSchemaRetriever());
+        $provider = new Provider(new TestSchemaRetriever());
 
         $this->expectExceptionMessage(
             'The requested schemas is not an object with a reference to a valid ' .
@@ -53,18 +54,18 @@ class ProviderTest extends \PHPUnit\Framework\TestCase
         $provider->retrieve("badmeta");
     }
 
-    public function testInvalidAgainstMetaSchema()
+    public function testInvalidAgainstMetaSchema(): void
     {
-        $provider = new \JsonSchemaProvider\Provider(new TestSchemaRetriever());
+        $provider = new Provider(new TestSchemaRetriever());
 
         $this->expectExceptionMessage('The requested schema is not valid');
 
         $provider->retrieve("invalidagainstmeta");
     }
 
-    public function testValidSchema()
+    public function testValidSchema(): void
     {
-        $provider = new \JsonSchemaProvider\Provider(new TestSchemaRetriever());
+        $provider = new Provider(new TestSchemaRetriever());
 
         $schema = <<<'JSON'
 {
